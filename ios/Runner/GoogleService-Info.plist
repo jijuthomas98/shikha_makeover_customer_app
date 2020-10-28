@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>180493826973-hpl6ekmm09s6em29k6259oumqjgmptkv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.180493826973-hpl6ekmm09s6em29k6259oumqjgmptkv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDd8l4wdbWLJecwTNtj5D5m4KhD9l86HSE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>180493826973</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.shikhaMakeoverCustomerApp</string>
+	<key>PROJECT_ID</key>
+	<string>sm-the-glem-factory</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sm-the-glem-factory.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:180493826973:ios:2312bd75df48da70400d74</string>
+	<key>DATABASE_URL</key>
+	<string>https://sm-the-glem-factory.firebaseio.com</string>
+</dict>
+</plist>
