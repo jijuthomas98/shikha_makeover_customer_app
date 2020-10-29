@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shikha_makeover_customer_app/screens/LoginPage.dart';
-import 'package:shikha_makeover_customer_app/components/OnBoardPage.dart';
-import 'package:shikha_makeover_customer_app/components/getIndicator.dart';
+import 'package:shikha_makeover_customer_app/components/appWidgets/OnBoardPage.dart';
+import 'package:shikha_makeover_customer_app/components/appWidgets/getIndicator.dart';
+//import 'package:shikha_makeover_customer_app/components/auth.dart';
 
 class Onboarding extends StatelessWidget {
   @override

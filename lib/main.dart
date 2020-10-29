@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shikha_makeover_customer_app/screens/LoginPage.dart';
 import 'screens/Onboarding.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'components/auth.dart';
+import 'root_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,14 +19,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     precacheImage(AssetImage('asset/images/Wallpapers/Opening.jpg'), context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Shikha Makerover',
-      theme: ThemeData(
-        primaryColor: Color(0xffe9ceb8),
-        scaffoldBackgroundColor: Color(0xfff3f5f7),
+    return Provider<Auth>(
+      create: (_) => Auth(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Shikha Makerover',
+        theme: ThemeData(
+          primaryColor: Color(0xffe9ceb8),
+          scaffoldBackgroundColor: Color(0xfff3f5f7),
+        ),
+        home: MyHomePage(),
       ),
-      home: MyHomePage(),
     );
   }
 }
@@ -106,6 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void openOnBoard() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Onboarding()));
+        context, MaterialPageRoute(builder: (context) => RootPage()));
   }
 }

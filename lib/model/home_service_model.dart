@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shikha_makeover_customer_app/packages/BodyMassage.dart';
-import 'package:shikha_makeover_customer_app/packages/ClassicPackage.dart';
-import 'package:shikha_makeover_customer_app/packages/DeTanBleach.dart';
-import 'package:shikha_makeover_customer_app/packages/FacialAndClean.dart';
-import 'package:shikha_makeover_customer_app/packages/MediPedicure.dart';
+import 'package:shikha_makeover_customer_app/screens/packages/BodyMassage.dart';
+import 'package:shikha_makeover_customer_app/screens/packages/ClassicPackage.dart';
+import 'package:shikha_makeover_customer_app/screens/packages/DeTanBleach.dart';
+import 'package:shikha_makeover_customer_app/screens/packages/FacialAndClean.dart';
+import 'package:shikha_makeover_customer_app/screens/packages/MediPedicure.dart';
 import 'package:shikha_makeover_customer_app/screens/Services.dart';
 
 class HomeService {

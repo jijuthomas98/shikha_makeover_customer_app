@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shikha_makeover_customer_app/components/SideDrawer.dart';
-import 'package:shikha_makeover_customer_app/components/guideLinesBar.dart';
-// import 'package:shikha_makeover_customer_app/components/SideDrawer.dart';
-import 'package:shikha_makeover_customer_app/components/homeImageCarousel.dart';
-import 'package:shikha_makeover_customer_app/components/getIndicator.dart';
-import 'package:shikha_makeover_customer_app/components/offersCarousel.dart';
-
+import 'package:shikha_makeover_customer_app/components/appWidgets/SideDrawer.dart';
+import 'package:shikha_makeover_customer_app/components/appWidgets/guideLinesBar.dart';
+import 'package:shikha_makeover_customer_app/components/appWidgets/homeImageCarousel.dart';
+import 'package:shikha_makeover_customer_app/components/appWidgets/getIndicator.dart';
+import 'package:shikha_makeover_customer_app/components/appWidgets/offersCarousel.dart';
 import 'package:shikha_makeover_customer_app/model/home_service_model.dart';
-
 import 'package:shikha_makeover_customer_app/constant.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 

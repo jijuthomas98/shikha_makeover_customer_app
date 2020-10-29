@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:shikha_makeover_customer_app/components/auth.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 
 class Profile extends StatefulWidget {
@@ -10,6 +12,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<Auth>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -118,7 +121,9 @@ class _ProfileState extends State<Profile> {
               Align(
                 alignment: FractionalOffset.bottomCenter,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    auth.signOut();
+                  },
                   child: Container(
                     height: MediaQuery.of(context).size.height / 15,
                     width: MediaQuery.of(context).size.width,

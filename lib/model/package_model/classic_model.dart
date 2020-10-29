@@ -1,5 +1,3 @@
-import 'package:shikha_makeover_customer_app/packages/ClassicPackage.dart';
-
 class ClassicModel {
   String title, details, img;
   int currentPrice, previousPrice, time;

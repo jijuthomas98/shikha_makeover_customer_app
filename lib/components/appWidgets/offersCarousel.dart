@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constant.dart';
+import '../../constant.dart';
 import 'package:shikha_makeover_customer_app/model/Offer_model.dart';
 
 class OffersCarousel extends StatelessWidget {

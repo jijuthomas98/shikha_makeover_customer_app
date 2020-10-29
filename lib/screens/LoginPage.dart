@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shikha_makeover_customer_app/screens/LandingPage.dart';
+import 'package:provider/provider.dart';
 import '../constant.dart';
-import 'package:shikha_makeover_customer_app/screens/SignUpPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shikha_makeover_customer_app/components/auth.dart';
 
 enum FormType { login, register }
 
@@ -44,17 +43,16 @@ class _LoginPageState extends State<LoginPage> {
   void validateAndSubmit() async {
     if (validateAndSave()) {
       try {
+        final auth = Provider.of<Auth>(context, listen: false);
         if (_formType == FormType.login) {
-          UserCredential userCredential = await FirebaseAuth.instance
-              .signInWithEmailAndPassword(email: _email, password: _password);
-          print(userCredential.user);
+          String userId =
+              await auth.signInWithEmailAndPassword(_email, _password);
+          print(userId);
         } else {
-          print('Sign in clicked');
-          UserCredential userCredential = await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-                  email: _email, password: _password);
-
-          print(userCredential.user);
+          String userId =
+              await auth.createUserWithEmailAndPassword(_email, _password);
+          print(userId);
+          print('User created');
         }
       } catch (e) {
         print(e);
