@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shikha_makeover_customer_app/components/service_provider.dart';
+import 'package:shikha_makeover_customer_app/router/package_router.dart'
+    as router;
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 
 class Services extends StatefulWidget {
@@ -16,6 +18,8 @@ class _ServicesState extends State<Services> {
     serviceData = Provider.of<ServiceProvider>(context, listen: false);
     serviceData.getService();
     return MaterialApp(
+      onGenerateRoute: router.serviceRoutes,
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -55,8 +59,8 @@ class _ServicesState extends State<Services> {
           itemBuilder: (BuildContext context, index) {
             // Service service = services[index];
             return InkWell(
-              onTap: () =>
-                  changePackage(serviceData.getServiceModel[index].fileName),
+              onTap: () => Navigator.pushNamed(
+                  context, serviceData.getServiceModel[index].fileName),
               child: Container(
                 height: MediaQuery.of(context).size.height / 7,
                 width: MediaQuery.of(context).size.width,
@@ -115,9 +119,5 @@ class _ServicesState extends State<Services> {
         ),
       ),
     );
-  }
-
-  void changePackage(Widget fileName) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => fileName));
   }
 }
