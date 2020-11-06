@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shikha_makeover_customer_app/model/package_model/classic_model.dart';
-import 'package:shikha_makeover_customer_app/screens/DateNTime.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
+import 'package:shikha_makeover_customer_app/screens/DateNTime.dart';
 
 class ClassicPackage extends StatefulWidget {
   @override

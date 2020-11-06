@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shikha_makeover_customer_app/model/service_model.dart';
+import 'package:provider/provider.dart';
+import 'package:shikha_makeover_customer_app/components/service_provider.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 
 class Services extends StatefulWidget {
@@ -9,8 +10,11 @@ class Services extends StatefulWidget {
 }
 
 class _ServicesState extends State<Services> {
+  ServiceProvider serviceData;
   @override
   Widget build(BuildContext context) {
+    serviceData = Provider.of<ServiceProvider>(context, listen: false);
+    serviceData.getService();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -45,21 +49,21 @@ class _ServicesState extends State<Services> {
           ],
         ),
         body: ListView.builder(
-          itemCount: services.length,
+          itemCount: serviceData.getServiceModel.length,
+          shrinkWrap: true,
           scrollDirection: Axis.vertical,
           itemBuilder: (BuildContext context, index) {
-            Service service = services[index];
+            // Service service = services[index];
             return InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => service.onPress),
-              ),
+              onTap: () =>
+                  changePackage(serviceData.getServiceModel[index].fileName),
               child: Container(
                 height: MediaQuery.of(context).size.height / 7,
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 6),
                 child: Card(
-                  color: Color(service.color),
+                  color: Color(
+                      int.parse(serviceData.getServiceModel[index].color)),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
@@ -76,7 +80,7 @@ class _ServicesState extends State<Services> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                service.title,
+                                serviceData.getServiceModel[index].title,
                                 style: TextStyle(
                                   fontFamily: 'inter',
                                   fontSize: 18,
@@ -84,7 +88,7 @@ class _ServicesState extends State<Services> {
                                 ),
                               ),
                               Text(
-                                service.subText,
+                                serviceData.getServiceModel[index].subText,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontFamily: 'inter',
@@ -98,7 +102,8 @@ class _ServicesState extends State<Services> {
                       Expanded(
                         flex: 2,
                         child: Image(
-                          image: AssetImage(service.imgUrl),
+                          image: NetworkImage(
+                              serviceData.getServiceModel[index].imgUrl),
                         ),
                       )
                     ],
@@ -110,5 +115,9 @@ class _ServicesState extends State<Services> {
         ),
       ),
     );
+  }
+
+  void changePackage(Widget fileName) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => fileName));
   }
 }

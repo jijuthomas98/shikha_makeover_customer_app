@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shikha_makeover_customer_app/screens/LoginPage.dart';
-import 'screens/Onboarding.dart';
 import 'dart:async';
-import 'package:flutter/services.dart';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:shikha_makeover_customer_app/components/service_provider.dart';
+
 import 'components/auth.dart';
 import 'root_page.dart';
 
@@ -19,8 +20,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     precacheImage(AssetImage('asset/images/Wallpapers/Opening.jpg'), context);
-    return Provider<Auth>(
-      create: (_) => Auth(),
+    return MultiProvider(
+      providers: [
+        Provider<Auth>(
+          create: (context) => Auth(),
+        ),
+        ChangeNotifierProvider<ServiceProvider>(
+          create: (context) => ServiceProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Shikha Makerover',
