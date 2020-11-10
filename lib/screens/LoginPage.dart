@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../constant.dart';
 import 'package:shikha_makeover_customer_app/components/auth.dart';
+
+import '../constant.dart';
 
 enum FormType { login, register }
 
@@ -13,6 +14,8 @@ class LoginPage extends StatefulWidget {
 final formKey = GlobalKey<FormState>();
 String _email;
 String _password;
+String _name, _address;
+String _phoneNo;
 FormType _formType = FormType.login;
 Image bgImage;
 
@@ -51,6 +54,12 @@ class _LoginPageState extends State<LoginPage> {
         } else {
           String userId =
               await auth.createUserWithEmailAndPassword(_email, _password);
+          auth.registerUserData(
+              fullName: _name,
+              phoneNo: _phoneNo,
+              address: _address,
+              email: _email,
+              password: _password);
           print(userId);
           print('User created');
         }
@@ -177,23 +186,66 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   List<Widget> buildInputs() {
-    return [
-      TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Email',
+    if (_formType == FormType.login) {
+      return [
+        TextFormField(
+          decoration: InputDecoration(
+            labelText: 'Email',
+          ),
+          validator: (value) => value.isEmpty ? 'Email cant be empty' : null,
+          onSaved: (value) => _email = value,
         ),
-        validator: (value) => value.isEmpty ? 'Email cant be empty' : null,
-        onSaved: (value) => _email = value,
-      ),
-      TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Password',
+        TextFormField(
+          decoration: InputDecoration(
+            labelText: 'Password',
+          ),
+          obscureText: true,
+          validator: (value) => value.isEmpty ? 'Password cant be empty' : null,
+          onSaved: (value) => _password = value,
         ),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? 'Password cant be empty' : null,
-        onSaved: (value) => _password = value,
-      ),
-    ];
+      ];
+    } else {
+      return [
+        TextFormField(
+          decoration: InputDecoration(
+            labelText: 'Full Name',
+          ),
+          validator: (value) => value.isEmpty ? 'Name cant be empty' : null,
+          onSaved: (value) => _name = value,
+        ),
+        TextFormField(
+          decoration: InputDecoration(
+            labelText: 'Email',
+          ),
+          validator: (value) => value.isEmpty ? 'Email cant be empty' : null,
+          onSaved: (value) => _email = value,
+        ),
+        TextFormField(
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: 'Phone No',
+          ),
+          validator: (value) => value.isEmpty ? 'Phone No cant be empty' : null,
+          onSaved: (value) => _phoneNo = value,
+        ),
+        TextFormField(
+          decoration: InputDecoration(
+            labelText: 'Password',
+          ),
+          obscureText: true,
+          validator: (value) => value.isEmpty ? 'Password cant be empty' : null,
+          onSaved: (value) => _password = value,
+        ),
+        TextFormField(
+          decoration: InputDecoration(
+            labelText: 'Address',
+          ),
+          validator: (value) =>
+              value.isEmpty ? 'Address No cant be empty' : null,
+          onSaved: (value) => _address = value,
+        ),
+      ];
+    }
   }
 
   List<Widget> buildSubmitButton() {

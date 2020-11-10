@@ -42,7 +42,16 @@ class _CartState extends State<Cart> {
                 itemBuilder: (BuildContext context, index) {
                   CartModel cartModel = cart[index];
                   return Dismissible(
-                    key: Key(cartModel.title),
+                    onDismissed: (direction) {
+                      setState(() {
+                        cart.removeAt(index);
+                      });
+                    },
+                    key: UniqueKey(),
+                    background: Container(
+                      color: Colors.red,
+                      child: Icon(FontAwesomeIcons.trash),
+                    ),
                     confirmDismiss: (direction) async {
                       return await showDialog(
                           context: context,

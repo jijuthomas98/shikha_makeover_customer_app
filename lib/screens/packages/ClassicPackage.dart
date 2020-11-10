@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shikha_makeover_customer_app/model/package_model/classic_model.dart';
+import 'package:provider/provider.dart';
+import 'package:shikha_makeover_customer_app/components/appWidgets/SubPackageSelector.dart';
+import 'package:shikha_makeover_customer_app/components/service_provider.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
-import 'package:shikha_makeover_customer_app/screens/DateNTime.dart';
 
 class ClassicPackage extends StatefulWidget {
   @override
@@ -10,8 +11,11 @@ class ClassicPackage extends StatefulWidget {
 }
 
 class _ClassicPackageState extends State<ClassicPackage> {
+  ServiceProvider packageData;
   @override
   Widget build(BuildContext context) {
+    packageData = Provider.of<ServiceProvider>(context, listen: false);
+    packageData.getClassic();
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.grey),
@@ -43,18 +47,14 @@ class _ClassicPackageState extends State<ClassicPackage> {
           ),
         ],
       ),
-      body: Stack(
-        alignment: AlignmentDirectional.bottomEnd,
+      body: Column(
         children: [
-          Container(
-            color: Color(0xffFFFAFA),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+          SubPackageSelector(),
+          Expanded(
             child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: classicPackageDate.length,
+              itemCount: packageData.getClassicModel.length,
               itemBuilder: (BuildContext context, index) {
-                ClassicModel classicModel = classicPackageDate[index];
+                // ClassicModel classicModel = classicPackageDate[index];
                 return Container(
                   height: MediaQuery.of(context).size.height / 3,
                   width: MediaQuery.of(context).size.width,
@@ -78,7 +78,8 @@ class _ClassicPackageState extends State<ClassicPackage> {
                                     width:
                                         MediaQuery.of(context).size.width / 3,
                                     child: Image(
-                                      image: AssetImage(classicModel.img),
+                                      image: NetworkImage(packageData
+                                          .getClassicModel[index].img),
                                     ),
                                   ),
                                   Container(
@@ -96,7 +97,8 @@ class _ClassicPackageState extends State<ClassicPackage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          classicModel.title,
+                                          packageData
+                                              .getClassicModel[index].title,
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w800,
@@ -108,11 +110,11 @@ class _ClassicPackageState extends State<ClassicPackage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              '₹ ${classicModel.currentPrice}',
+                                              '₹ ${packageData.getClassicModel[index].currentPrice}',
                                               style: TextStyle(fontSize: 15),
                                             ),
                                             Text(
-                                              '₹ ${classicModel.previousPrice}',
+                                              '₹ ${packageData.getClassicModel[index].previousPrice}',
                                               style: TextStyle(
                                                   color: Colors.red,
                                                   fontSize: 15,
@@ -121,20 +123,63 @@ class _ClassicPackageState extends State<ClassicPackage> {
                                             )
                                           ],
                                         ),
-                                        Text('${classicModel.time} min'),
+                                        Text(
+                                            '${packageData.getClassicModel[index].time} min'),
                                       ],
                                     ),
                                   ),
                                   Container(
-                                    child: RaisedButton(
-                                      color: Colors.white,
-                                      textColor: Colors.red,
-                                      onPressed: () {},
-                                      child: Text('Add'),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: BorderSide(color: Colors.red),
-                                      ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        ClipOval(
+                                          child: Material(
+                                            color: Color(
+                                                0xffff7d85), // button color
+                                            child: InkWell(
+                                              splashColor:
+                                                  Colors.red, // inkwell color
+                                              child: SizedBox(
+                                                  width: 40,
+                                                  height: 40,
+                                                  child: Icon(Icons.add)),
+                                              onTap: () {},
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '1',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ),
+                                        ClipOval(
+                                          child: Material(
+                                            color: Color(
+                                                0xffff7d85), // button color
+                                            child: InkWell(
+                                              splashColor:
+                                                  Colors.red, // inkwell color
+                                              child: SizedBox(
+                                                width: 40,
+                                                height: 40,
+                                                child: Icon(
+                                                  FontAwesomeIcons.minus,
+                                                  size: 15,
+                                                ),
+                                              ),
+                                              onTap: () {},
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -161,7 +206,7 @@ class _ClassicPackageState extends State<ClassicPackage> {
                                   //   height: 10,
                                   // ),
                                   Text(
-                                    classicModel.details,
+                                    packageData.getClassicModel[index].details,
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: 'inter',
@@ -180,25 +225,14 @@ class _ClassicPackageState extends State<ClassicPackage> {
               },
             ),
           ),
-          InkWell(
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => DateAndTime())),
-            child: Container(
-              color: Color(0xffD7352E),
-              width: MediaQuery.of(context).size.width,
-              height: 70,
-              child: Center(
-                  child: Text(
-                'NEXT',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white),
-              )),
-            ),
-          )
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: Text('PROCEED TO CART'),
+        icon: Icon(FontAwesomeIcons.arrowCircleRight),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

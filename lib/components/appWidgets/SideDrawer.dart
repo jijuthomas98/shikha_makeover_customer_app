@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shikha_makeover_customer_app/screens/AboutUs.dart';
 import 'package:shikha_makeover_customer_app/screens/Appointment.dart';
 import 'package:shikha_makeover_customer_app/screens/SafetyMeasures.dart';
 import 'package:shikha_makeover_customer_app/screens/Services.dart';
+
+import '../auth.dart';
 
 class SideDrawer extends StatelessWidget {
   const SideDrawer({
@@ -11,6 +14,8 @@ class SideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<Auth>(context, listen: false);
+    auth.getUserData();
     return Drawer(
       child: Container(
         //color: Color(0xffFF7d85),
@@ -33,7 +38,7 @@ class SideDrawer extends StatelessWidget {
                 color: Color(0xfffafafa),
               ),
               accountName: Text(
-                'Jiju Thomas',
+                auth.userName,
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 23,

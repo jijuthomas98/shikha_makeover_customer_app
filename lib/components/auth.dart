@@ -1,7 +1,12 @@
 import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Auth {
+  String userName = '';
+  String phoneNo = '';
+  String address = '';
   Future<String> signInWithEmailAndPassword(
       String email, String password) async {
     UserCredential userCredential = await FirebaseAuth.instance
@@ -33,5 +38,25 @@ class Auth {
 
   Future signOut() async {
     return await FirebaseAuth.instance.signOut();
+  }
+
+  void registerUserData({String fullName, email, password, phoneNo, address}) {
+    FirebaseFirestore.instance.collection('userData').doc(currentUser()).set({
+      'fullName': fullName,
+      'email': email,
+      'password': password,
+      'phoneNo': phoneNo,
+      'address': address,
+    });
+  }
+
+  Future<String> getUserData() async {
+    DocumentSnapshot users = await FirebaseFirestore.instance
+        .collection('userData')
+        .doc(currentUser())
+        .get();
+    userName = users['fullName'];
+    phoneNo = users['phoneNo'];
+    address = users['address'];
   }
 }

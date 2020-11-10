@@ -26,4 +26,18 @@ List<CartModel> cart = [
     currentPrice: 200,
     time: 50,
   ),
+  CartModel(
+    img: 'asset/images/Images/OffersforYou/HomeSalonGlow.jpg',
+    title: 'Home Salon Glow',
+    previousPrice: 500,
+    currentPrice: 200,
+    time: 50,
+  ),
+  CartModel(
+    img: 'asset/images/Images/OffersforYou/HomeSalonGlow.jpg',
+    title: 'Home Salon Glow',
+    previousPrice: 500,
+    currentPrice: 200,
+    time: 50,
+  ),
 ];

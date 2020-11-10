@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shikha_makeover_customer_app/components/auth.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
+import 'package:shikha_makeover_customer_app/screens/LandingPage.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -26,7 +27,8 @@ class _ProfileState extends State<Profile> {
               Icons.arrow_back_ios,
               color: Colors.black54,
             ),
-            onTap: () => Navigator.pop(context),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LandingPage())),
           ),
           title: Text(
             'PROFILE',
@@ -67,13 +69,12 @@ class _ProfileState extends State<Profile> {
                       child: Column(
                         children: [
                           Text(
-                            'Shikha Sahu',
+                            auth.userName,
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          Text('Jabalpur'),
                         ],
                       ),
                     )
@@ -90,25 +91,19 @@ class _ProfileState extends State<Profile> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        labelText: 'Name',
+                        labelText: auth.userName,
                         border: OutlineInputBorder(),
                       ),
                     ),
                     TextField(
                       decoration: InputDecoration(
-                        labelText: 'Email',
+                        labelText: auth.phoneNo,
                         border: OutlineInputBorder(),
                       ),
                     ),
                     TextField(
                       decoration: InputDecoration(
-                        labelText: 'Mobile No',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Address',
+                        labelText: auth.address,
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -116,25 +111,51 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height / 7,
+                height: MediaQuery.of(context).size.height / 11,
               ),
-              Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: InkWell(
-                  onTap: () {
-                    auth.signOut();
-                  },
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 15,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.red,
-                    child: Center(
-                      child: Text(
-                        'LOGOUT',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 15,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.blueAccent,
+                      child: Center(
+                        child: Text(
+                          'EDIT',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: InkWell(
+                    onTap: () {
+                      auth.signOut();
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 15,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.red,
+                      child: Center(
+                        child: Text(
+                          'LOGOUT',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
