@@ -39,7 +39,7 @@ class ServiceProvider with ChangeNotifier {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('services')
         .doc('classic')
-        .collection('FacialWaxingCombo')
+        .collection('classic')
         .get();
 
     querySnapshot.docs.forEach(

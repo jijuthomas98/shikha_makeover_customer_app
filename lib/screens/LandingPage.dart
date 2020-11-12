@@ -12,21 +12,16 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   int _currentTab = 0;
-  PageController _controller = PageController();
   List<Widget> _screens = [
     HomePage(),
     Services(),
     Appointment(),
     Profile(),
   ];
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentTab = index;
-    });
-  }
-
   void _onItemTapped(int selectedIndex) {
-    _controller.jumpToPage(selectedIndex);
+    setState(() {
+      _currentTab = selectedIndex;
+    });
   }
 
   @override
@@ -34,11 +29,7 @@ class _LandingPageState extends State<LandingPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: PageView(
-          controller: _controller,
-          children: _screens,
-          onPageChanged: _onPageChanged,
-        ),
+        body: _screens[_currentTab],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Color(0xffFF7d85),

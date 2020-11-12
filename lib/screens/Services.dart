@@ -59,8 +59,11 @@ class _ServicesState extends State<Services> {
           itemBuilder: (BuildContext context, index) {
             // Service service = services[index];
             return InkWell(
-              onTap: () => Navigator.pushNamed(
-                  context, serviceData.getServiceModel[index].fileName),
+              onTap: () {
+                Navigator.pushNamed(
+                    context, serviceData.getServiceModel[index].fileName);
+                return serviceData.getServiceModel[index].fileName;
+              },
               child: Container(
                 height: MediaQuery.of(context).size.height / 7,
                 width: MediaQuery.of(context).size.width,
