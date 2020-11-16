@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,6 @@ class _ServicesState extends State<Services> {
   @override
   Widget build(BuildContext context) {
     serviceData = Provider.of<ServiceProvider>(context, listen: false);
-    serviceData.getService();
     return MaterialApp(
       onGenerateRoute: router.serviceRoutes,
       initialRoute: '/',
@@ -52,74 +52,75 @@ class _ServicesState extends State<Services> {
             ),
           ],
         ),
-        body: ListView.builder(
-          itemCount: serviceData.getServiceModel.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, index) {
-            // Service service = services[index];
-            return InkWell(
-              onTap: () {
-                Navigator.pushNamed(
-                    context, serviceData.getServiceModel[index].fileName);
-                return serviceData.getServiceModel[index].fileName;
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height / 7,
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 6),
-                child: Card(
-                  color: Color(
-                      int.parse(serviceData.getServiceModel[index].color)),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                serviceData.getServiceModel[index].title,
-                                style: TextStyle(
-                                  fontFamily: 'inter',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
+        body: StreamBuilder(
+            stream: serviceData.getStreamServices(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) return CircularProgressIndicator();
+              return ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (BuildContext context, index) {
+                  DocumentSnapshot service = snapshot.data.documents[index];
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, service['fileName']);
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 7,
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 6),
+                      child: Card(
+                        color: Color(int.parse(service['color'])),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      service['title'],
+                                      style: TextStyle(
+                                        fontFamily: 'inter',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      service['subText'],
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: 'inter',
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                serviceData.getServiceModel[index].subText,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: 'inter',
-                                  color: Colors.black45,
-                                ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Image(
+                                image: NetworkImage(service['imgUrl']),
                               ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: Image(
-                          image: NetworkImage(
-                              serviceData.getServiceModel[index].imgUrl),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
+                    ),
+                  );
+                },
+              );
+            }),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -6,14 +7,15 @@ import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 
 List<String> subPackage = [
   'Best Deal',
-  'Bridal Package',
+  'Pre Bridal Package',
   'Premium Package',
-  'Facial + Wax Combo'
+  'Facial+Wax Combo'
 ];
+
 ServiceProvider packageData;
 double currentPageValue = 0;
 int selectedIndex = 0;
-
+String subPackageName = 'FacialWaxingCombo';
 PageController _pageController = PageController(
   initialPage: 0,
 );
@@ -35,8 +37,7 @@ class _ClassicPackageState extends State<ClassicPackage> {
 
   @override
   Widget build(BuildContext context) {
-    packageData = Provider.of<ServiceProvider>(context, listen: false);
-    packageData.getClassic();
+    packageData = Provider.of<ServiceProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.grey),
@@ -68,160 +69,177 @@ class _ClassicPackageState extends State<ClassicPackage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          SubPackageSelector(),
-          Expanded(
-            child: PageView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              itemCount: subPackage.length,
-              itemBuilder: (context, index) {
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: packageData.getClassicModel.length,
-                    itemBuilder: (BuildContext context, index) {
-                      // ClassicModel classicModel = classicPackageDate[index];
-                      return Container(
-                        height: MediaQuery.of(context).size.height / 3,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.all(8),
-                        child: Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          child: Image(
-                                            image: NetworkImage(packageData
-                                                .getClassicModel[index].img),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          padding: EdgeInsets.only(
-                                              top: 10,
-                                              left: 10,
-                                              bottom: 10,
-                                              right: 20),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                packageData
-                                                    .getClassicModel[index]
-                                                    .title,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontFamily: 'inter',
-                                                ),
+      body: StreamBuilder(
+        stream: packageData.getStreamPackage('classic'),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+          return Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: SubPackageSelector(),
+              ),
+              Expanded(
+                flex: 10,
+                child: PageView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, index) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (BuildContext context, index) {
+                          DocumentSnapshot package =
+                              snapshot.data.documents[index];
+                          return Container(
+                            height: MediaQuery.of(context).size.height / 3,
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.all(8),
+                            child: Card(
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  3,
+                                              child: Image(
+                                                image: NetworkImage(
+                                                    package['img']),
                                               ),
-                                              Row(
+                                            ),
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  3,
+                                              padding: EdgeInsets.only(
+                                                  top: 10,
+                                                  left: 10,
+                                                  bottom: 10,
+                                                  right: 20),
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
-                                                        .spaceBetween,
+                                                        .spaceAround,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    '₹ ${packageData.getClassicModel[index].currentPrice}',
-                                                    style:
-                                                        TextStyle(fontSize: 15),
+                                                    package['title'],
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontFamily: 'inter',
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        '₹ ${package['currentPrice']}',
+                                                        style: TextStyle(
+                                                            fontSize: 15),
+                                                      ),
+                                                      Text(
+                                                        '₹ ${package['previousPrice']}',
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontSize: 15,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough),
+                                                      )
+                                                    ],
                                                   ),
                                                   Text(
-                                                    '₹ ${packageData.getClassicModel[index].previousPrice}',
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 15,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough),
-                                                  )
+                                                      '${package['time']} min'),
                                                 ],
                                               ),
-                                              Text(
-                                                  '${packageData.getClassicModel[index].time} min'),
-                                            ],
-                                          ),
+                                            ),
+                                            Container(
+                                              child: RaisedButton(
+                                                color: Color(0xffff7d85),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                onPressed: () {},
+                                                child: Text("ADD"),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          child: RaisedButton(
-                                            color: Color(0xffff7d85),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            onPressed: () {},
-                                            child: Text("ADD"),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                // second half of card
-                                Expanded(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.all(8),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                          'Package Details',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700),
+                                    // second half of card
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        padding: EdgeInsets.all(8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              'Package Details',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            // SizedBox(
+                                            //   height: 10,
+                                            // ),
+                                            Text(
+                                              package['details'],
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'inter',
+                                                height: 1.3,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        // SizedBox(
-                                        //   height: 10,
-                                        // ),
-                                        Text(
-                                          packageData
-                                              .getClassicModel[index].details,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: 'inter',
-                                            height: 1.3,
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
@@ -265,16 +283,31 @@ class _SubPackageSelectorState extends State<SubPackageSelector> {
         setState(() {
           selectedIndex = index;
         });
+
+        packageData.subPackage = 'classic';
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Text(
-          subPackage[index],
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: selectedIndex == index ? 17 : 15,
-            color: selectedIndex == index ? Color(0xffff7d85) : Colors.black87,
-          ),
+        child: Column(
+          children: [
+            Text(
+              subPackage[index],
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: selectedIndex == index ? 17 : 15,
+                color:
+                    selectedIndex == index ? Color(0xffff7d85) : Colors.black87,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 8),
+              height: 4,
+              width: 35,
+              color: selectedIndex == index
+                  ? Color(0xffff7d85)
+                  : Colors.transparent,
+            ),
+          ],
         ),
       ),
     );

@@ -32,11 +32,7 @@ class _SubPackageSelectorState extends State<SubPackageSelector> {
 
   Widget buildSubPackage(int index) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
-      },
+      onTap: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Text(
