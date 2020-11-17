@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 
+import 'LandingPage.dart';
+
 class Appointment extends StatefulWidget {
   @override
   _AppointmentState createState() => _AppointmentState();
@@ -30,7 +32,8 @@ class _AppointmentState extends State<Appointment> {
               Icons.arrow_back_ios,
               color: Colors.black54,
             ),
-            onTap: () => Navigator.pop(context),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LandingPage())),
           ),
           title: Text(
             'APPOINTMENTS',

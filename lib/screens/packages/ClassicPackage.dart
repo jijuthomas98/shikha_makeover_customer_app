@@ -15,7 +15,6 @@ List<String> subPackage = [
 ServiceProvider packageData;
 double currentPageValue = 0;
 int selectedIndex = 0;
-String subPackageName = 'FacialWaxingCombo';
 PageController _pageController = PageController(
   initialPage: 0,
 );
@@ -26,15 +25,6 @@ class ClassicPackage extends StatefulWidget {
 }
 
 class _ClassicPackageState extends State<ClassicPackage> {
-  @override
-  void setState(fn) {
-    // TODO: implement setState
-    super.setState(fn);
-    _pageController.addListener(() {
-      selectedIndex = _pageController.page.toInt();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     packageData = Provider.of<ServiceProvider>(context);
@@ -79,7 +69,54 @@ class _ClassicPackageState extends State<ClassicPackage> {
             children: [
               Expanded(
                 flex: 1,
-                child: SubPackageSelector(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    height: 25,
+                    child: ListView.builder(
+                      itemCount: subPackage.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            _pageController.animateToPage(index,
+                                curve: Curves.decelerate,
+                                duration: Duration(milliseconds: 300));
+                            setState(() {
+                              selectedIndex = index;
+                              switchPackage();
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              children: [
+                                Text(
+                                  subPackage[index],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: selectedIndex == index ? 17 : 15,
+                                    color: selectedIndex == index
+                                        ? Color(0xffff7d85)
+                                        : Colors.black87,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 8),
+                                  height: 4,
+                                  width: 35,
+                                  color: selectedIndex == index
+                                      ? Color(0xffff7d85)
+                                      : Colors.transparent,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ),
               Expanded(
                 flex: 10,
@@ -249,67 +286,21 @@ class _ClassicPackageState extends State<ClassicPackage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
-}
 
-class SubPackageSelector extends StatefulWidget {
-  @override
-  _SubPackageSelectorState createState() => _SubPackageSelectorState();
-}
-
-class _SubPackageSelectorState extends State<SubPackageSelector> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        height: 25,
-        child: ListView.builder(
-          itemCount: subPackage.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return buildSubPackage(index);
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget buildSubPackage(int index) {
-    return GestureDetector(
-      onTap: () {
-        _pageController.animateToPage(index,
-            curve: Curves.decelerate, duration: Duration(milliseconds: 300));
-
-        setState(() {
-          selectedIndex = index;
-        });
-
+  void switchPackage() {
+    switch (selectedIndex) {
+      case 0:
         packageData.subPackage = 'classic';
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          children: [
-            Text(
-              subPackage[index],
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: selectedIndex == index ? 17 : 15,
-                color:
-                    selectedIndex == index ? Color(0xffff7d85) : Colors.black87,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 8),
-              height: 4,
-              width: 35,
-              color: selectedIndex == index
-                  ? Color(0xffff7d85)
-                  : Colors.transparent,
-            ),
-          ],
-        ),
-      ),
-    );
+        break;
+      case 1:
+        packageData.subPackage = 'pre-BridalPackages';
+        break;
+      case 2:
+        packageData.subPackage = 'premiumPackages';
+        break;
+      case 3:
+        packageData.subPackage = 'FacialWaxingCombo';
+        break;
+    }
   }
 }

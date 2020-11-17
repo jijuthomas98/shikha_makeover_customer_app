@@ -143,64 +143,16 @@ class _CartState extends State<Cart> {
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          ClipOval(
-                                            child: Material(
-                                              color: Color(
-                                                  0xffff7d85), // button color
-                                              child: InkWell(
-                                                splashColor:
-                                                    Colors.red, // inkwell color
-                                                child: SizedBox(
-                                                    width: 40,
-                                                    height: 40,
-                                                    child: Icon(Icons.add)),
-                                                onTap: () {},
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '1',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ),
-                                          ClipOval(
-                                            child: Material(
-                                              color: Color(
-                                                  0xffff7d85), // button color
-                                              child: InkWell(
-                                                splashColor:
-                                                    Colors.red, // inkwell color
-                                                child: SizedBox(
-                                                  width: 40,
-                                                  height: 40,
-                                                  child: Icon(
-                                                    FontAwesomeIcons.minus,
-                                                    size: 15,
-                                                  ),
-                                                ),
-                                                onTap: () {},
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),
-                              Text('Swipe to Delete'),
+                              Text(
+                                'Swipe to Delete',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xffff7d85),
+                                ),
+                              ),
                             ],
                           ),
                         ),
