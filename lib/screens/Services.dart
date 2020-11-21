@@ -7,8 +7,6 @@ import 'package:shikha_makeover_customer_app/router/package_router.dart'
     as router;
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 
-import 'LandingPage.dart';
-
 class Services extends StatefulWidget {
   @override
   _ServicesState createState() => _ServicesState();
@@ -33,8 +31,7 @@ class _ServicesState extends State<Services> {
               Icons.arrow_back_ios,
               color: Colors.black54,
             ),
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LandingPage())),
+            onTap: () => Navigator.pop(context),
           ),
           title: Text(
             'SERVICES',

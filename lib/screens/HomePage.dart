@@ -57,14 +57,6 @@ class _homePageState extends State<homePage> {
             actions: [
               IconButton(
                 icon: Icon(
-                  FontAwesomeIcons.search,
-                  color: Colors.black54,
-                  size: 20,
-                ),
-                onPressed: null,
-              ),
-              IconButton(
-                icon: Icon(
                   FontAwesomeIcons.shoppingBag,
                   color: Colors.black54,
                 ),

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shikha_makeover_customer_app/components/service_provider.dart';
 
 import 'components/auth.dart';
+import 'model/cart_model.dart';
 import 'root_page.dart';
 
 void main() async {
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<ServiceProvider>(
           create: (context) => ServiceProvider(),
+        ),
+        ChangeNotifierProvider<CartItem>(
+          create: (context) => CartItem(),
         ),
       ],
       child: MaterialApp(

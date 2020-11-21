@@ -10,6 +10,7 @@ class ServiceProvider with ChangeNotifier {
     return FirebaseFirestore.instance.collection('services').snapshots();
   }
 
+  // Stream of Packages
   Stream<QuerySnapshot> getStreamPackage(String package) {
     return FirebaseFirestore.instance
         .collection('/services/$package/$subPackage')

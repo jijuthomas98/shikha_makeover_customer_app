@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:shikha_makeover_customer_app/model/cart_model.dart';
-import 'package:shikha_makeover_customer_app/screens/Address.dart';
-import 'package:shikha_makeover_customer_app/screens/Services.dart';
 
 class Cart extends StatefulWidget {
   @override
   _CartState createState() => _CartState();
 }
 
+CartItem cartData;
+
 class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
+    cartData = Provider.of<CartItem>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -38,13 +40,14 @@ class _CartState extends State<Cart> {
               height: MediaQuery.of(context).size.height / 2,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: cart.length,
+                itemCount: cartData.itemCount,
                 itemBuilder: (BuildContext context, index) {
-                  CartModel cartModel = cart[index];
+                  //CartModel cartModel = cart[index];
                   return Dismissible(
                     onDismissed: (direction) {
                       setState(() {
-                        cart.removeAt(index);
+                        cartData.removeItem(
+                            cartData.items.values.toList()[index].title);
                       });
                     },
                     key: UniqueKey(),
@@ -95,12 +98,6 @@ class _CartState extends State<Cart> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Container(
-                                      width: 120,
-                                      child: Image(
-                                        image: AssetImage(cartModel.img),
-                                      ),
-                                    ),
-                                    Container(
                                       width: 160,
                                       padding: EdgeInsets.only(
                                           top: 10,
@@ -114,7 +111,9 @@ class _CartState extends State<Cart> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            cartModel.title,
+                                            cartData.items.values
+                                                .toList()[index]
+                                                .title,
                                             style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w800,
@@ -126,11 +125,11 @@ class _CartState extends State<Cart> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                '₹ ${cartModel.currentPrice}',
+                                                '₹ ${cartData.items.values.toList()[index].currentPrice}',
                                                 style: TextStyle(fontSize: 15),
                                               ),
                                               Text(
-                                                '₹ ${cartModel.previousPrice}',
+                                                '₹ ${cartData.items.values.toList()[index].previousPrice}',
                                                 style: TextStyle(
                                                     color: Colors.red,
                                                     fontSize: 15,
@@ -139,7 +138,75 @@ class _CartState extends State<Cart> {
                                               )
                                             ],
                                           ),
-                                          Text('${cartModel.time} min'),
+                                          Text(
+                                              'Total: ₹ ${cartData.items.values.toList()[index].currentPrice * cartData.items.values.toList()[index].quantity}'),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          ClipOval(
+                                            child: Material(
+                                              color: Color(
+                                                  0xffff7d85), // button color
+                                              child: InkWell(
+                                                splashColor:
+                                                    Colors.red, // inkwell color
+                                                child: SizedBox(
+                                                    width: 40,
+                                                    height: 40,
+                                                    child: Icon(Icons.add)),
+                                                onTap: () {
+                                                  cartData.addSingleItem(
+                                                      cartData.items.values
+                                                          .toList()[index]
+                                                          .title);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              cartData.items.values
+                                                  .toList()[index]
+                                                  .quantity
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ),
+                                          ClipOval(
+                                            child: Material(
+                                              color: Color(
+                                                  0xffff7d85), // button color
+                                              child: InkWell(
+                                                splashColor:
+                                                    Colors.red, // inkwell color
+                                                child: SizedBox(
+                                                  width: 40,
+                                                  height: 40,
+                                                  child: Icon(
+                                                    FontAwesomeIcons.minus,
+                                                    size: 15,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  cartData.removeSingleItem(
+                                                      cartData.items.values
+                                                          .toList()[index]
+                                                          .title);
+                                                },
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -182,7 +249,7 @@ class _CartState extends State<Cart> {
                         style: TextStyle(fontSize: 16),
                       ),
                       Text(
-                        '₹ 2980',
+                        '₹ ${cartData.totalOrder()}',
                         style: TextStyle(fontSize: 16),
                       )
                     ],
@@ -195,7 +262,7 @@ class _CartState extends State<Cart> {
                         style: TextStyle(fontSize: 16),
                       ),
                       Text(
-                        '₹ 900',
+                        '₹ ${cartData.totalDiscount()}',
                         style: TextStyle(fontSize: 16),
                       )
                     ],
@@ -211,7 +278,7 @@ class _CartState extends State<Cart> {
                         style: TextStyle(fontSize: 17),
                       ),
                       Text(
-                        '₹ 1200',
+                        '₹ ${cartData.totalAmount()}',
                         style: TextStyle(fontSize: 17),
                       )
                     ],
@@ -225,17 +292,14 @@ class _CartState extends State<Cart> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Services()));
+                        cartData.clear();
                       },
                       child: Container(
                         height: 60,
                         color: Color(0xffff7d85),
                         child: Center(
                             child: Text(
-                          'ADD MORE',
+                          'CLEAR CART',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -246,16 +310,13 @@ class _CartState extends State<Cart> {
                   ),
                   Expanded(
                     child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Address()));
-                      },
+                      onTap: () {},
                       child: Container(
                           height: 60,
                           color: Colors.blueAccent,
                           child: Center(
                             child: Text(
-                              'SELECT ADDRESS',
+                              'CHECKOUT',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,

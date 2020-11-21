@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shikha_makeover_customer_app/components/service_provider.dart';
+import 'package:shikha_makeover_customer_app/model/cart_model.dart';
 import 'package:shikha_makeover_customer_app/screens/Cart.dart';
 
 List<String> subPackage = [
@@ -11,7 +12,6 @@ List<String> subPackage = [
   'Premium Package',
   'Facial+Wax Combo'
 ];
-
 ServiceProvider packageData;
 double currentPageValue = 0;
 int selectedIndex = 0;
@@ -221,7 +221,16 @@ class _ClassicPackageState extends State<ClassicPackage> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             20)),
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  productSelected(
+                                                    title: package['title'],
+                                                    currentPrice:
+                                                        package['currentPrice'],
+                                                    previousPrice: package[
+                                                        'previousPrice'],
+                                                    time: package['time'],
+                                                  );
+                                                },
                                                 child: Text("ADD"),
                                               ),
                                             ),
@@ -279,12 +288,54 @@ class _ClassicPackageState extends State<ClassicPackage> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Cart()));
+        },
         label: Text('PROCEED TO CART'),
         icon: Icon(FontAwesomeIcons.arrowCircleRight),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  void productSelected({String title, int currentPrice, previousPrice, time}) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Confirm"),
+            content: const Text("Do you want to add this item in cart?"),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                    print(title);
+                    Provider.of<CartItem>(context, listen: false)
+                        .addItem(title, currentPrice, previousPrice, time);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Thank you'),
+                            content: Text('$title added to cart'),
+                            actions: [
+                              FlatButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false),
+                                  child: Text('OK'))
+                            ],
+                          );
+                        });
+                  },
+                  child: const Text("ADD")),
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text("CANCEL"),
+              ),
+            ],
+          );
+        });
   }
 
   void switchPackage() {
